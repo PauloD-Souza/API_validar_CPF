@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Validação de CPF</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Validação de CPF</h1>
+      <form id="cpfForm" class="centered-form">
+        <label for="cpfInput">CPF:</label>
+        <input type="text" id="cpfInput" name="cpfInput" />
+        <button type="submit">Validar</button>
+      </form>
+
+      <div id="result"></div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#cpfForm").submit(function (event) {
+          event.preventDefault();
+
+          var cpf = $("#cpfInput").val();
+          var data = {
+            cpf: cpf,
+          };
+
+          $.ajax({
+            url: "http://127.0.0.1:5000/api/validate_cpf",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (response) {
+              $("#result").text(response.status);
+            },
+            error: function (xhr, status, error) {
+              console.log(xhr.responseText);
+              console.log(status);
+              console.log(error);
+              $("#result").text("Erro na validação do CPF.");
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
